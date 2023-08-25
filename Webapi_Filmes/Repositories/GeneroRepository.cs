@@ -28,6 +28,11 @@ namespace Webapi_Filmes.Repositories
 
         public GeneroDomain BuscarPorId(int id)
         {
+
+            GeneroDomain buscar = new GeneroDomain();
+
+            List<GeneroDomain> ListaBusca =  new List<GeneroDomain>();
+
             //Declara a string de conexaso como parametro
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
@@ -37,20 +42,95 @@ namespace Webapi_Filmes.Repositories
                 //Abre a conexao com o banco de dados 
                 con.Open();
 
+                //Declara o SqlDataReader para percorrer a tabela do banco de dados
+                SqlDataReader rdr;
+
                 //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
                 using (SqlCommand cmd = new SqlCommand(querySelectId, con))
                 {
+
+                    //rdr = cmd.ExecuteReader();
+
                     ////Passa o valor do parametro 
                     cmd.Parameters.AddWithValue("@id", id);
 
                     //Executar a query (queryDelete)
-                    cmd.ExecuteNonQuery();
+                   rdr = cmd.ExecuteReader();
 
+                    while (rdr.Read())
+                    {
+                        GeneroDomain genero = new GeneroDomain()
+                        {
+                            IdGenero = Convert.ToInt32(rdr[0]),
+
+                            Nome = Convert.ToString(rdr["Nome"])  
+                        };
+
+                        ListaBusca.Add(genero);
+                    }
+                   
+                    
+                }
+         
+            }
+
+            buscar = ListaBusca.First(x => x.IdGenero == id);
+
+            return buscar;
+        }
+
+
+
+        /// <summary>
+        /// Metodo Para listar todos os Obejetos Generos 
+        /// </summary>
+        /// <returns> Lista de Objetos </returns>
+        public List<GeneroDomain> ListarTodos()
+        {
+            //Cria uma lista de objetos do tipo genero
+            List<GeneroDomain> ListaGenero = new List<GeneroDomain>();
+
+            //Declara a SqlConnection passando a string de conexao como parametro 
+            using (SqlConnection Con = new SqlConnection(StringConexao))
+            {
+                //Declara a instrucao a ser executada
+                string QuerySelectAll = "SELECT IdGenero , Nome FROM Genero";
+
+                //Abre a conexao com o banco de dados
+                Con.Open();
+
+                //Declara o SqlDataReader para percorrer a tabela do banco de dados
+                SqlDataReader rdr;
+
+                //Declara o SqlCommand passando a query que sera executada e a conexao com o banco de dados 
+                using (SqlCommand cmd = new SqlCommand(QuerySelectAll, Con))
+                {
+                    //Executa a query e armazena os dados do rdr
+                    rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        GeneroDomain genero = new GeneroDomain()
+                        {
+                            //Atribui a propiedade IdGenero o valor recebido no rdr
+                            IdGenero = Convert.ToInt32(rdr[0]),
+
+                            //Atribui a propiedade Nome o valor a ser recebido no rdr 
+                            Nome = Convert.ToString(rdr["Nome"])
+                        };
+
+                        //Adiciona Cada objeto Dentro da sua lista
+                        ListaGenero.Add(genero);
+                    }
                 }
 
-
             }
+
+            return ListaGenero;
         }
+
+
+
 
         /// <summary>
         /// Cadastrar um novo genero
@@ -110,53 +190,5 @@ namespace Webapi_Filmes.Repositories
             }
         }
 
-
-        /// <summary>
-        /// Metodo Para listar todos os Obejetos Generos 
-        /// </summary>
-        /// <returns> Lista de Objetos </returns>
-        public List<GeneroDomain> ListarTodos()
-        {
-            //Cria uma lista de objetos do tipo genero
-            List<GeneroDomain> ListaGenero = new List<GeneroDomain>();
-
-            //Declara a SqlConnection passando a string de conexao como parametro 
-            using (SqlConnection Con = new SqlConnection(StringConexao))
-            {
-                //Declara a instrucao a ser executada
-                string QuerySelectAll = "SELECT IdGenero , Nome FROM Genero";
-
-                //Abre a conexao com o banco de dados
-                Con.Open();
-
-                //Declara o SqlDataReader para percorrer a tabela do banco de dados
-                SqlDataReader rdr;
-
-                //Declara o SqlCommand passando a query que sera executada e a conexao com o banco de dados 
-                using (SqlCommand cmd = new SqlCommand(QuerySelectAll, Con))
-                {
-                    //Executa a query e armazena os dados do rdr
-                    rdr = cmd.ExecuteReader();
-
-                    while (rdr.Read())
-                    {
-                        GeneroDomain genero = new GeneroDomain()
-                        {
-                            //Atribui a propiedade IdGenero o valor recebido no rdr
-                            IdGenero = Convert.ToInt32(rdr[0]),
-
-                            //Atribui a propiedade Nome o valor a ser recebido no rdr 
-                            Nome = Convert.ToString(rdr["Nome"])
-                        };
-
-                        //Adiciona Cada objeto Dentro da sua lista
-                        ListaGenero.Add(genero);
-                    }
-                }
-
-            }
-
-            return ListaGenero;
-        }
     }
 }

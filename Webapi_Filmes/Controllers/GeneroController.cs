@@ -84,7 +84,7 @@ namespace Webapi_Filmes.Controllers
 
         }
 
-        [HttpDelete ("{id}")]
+        [HttpDelete("{id}")]
 
         public IActionResult Delete(int id)
         {
@@ -99,6 +99,26 @@ namespace Webapi_Filmes.Controllers
                 return BadRequest(error.Message);
             }
 
+        }
+
+
+        [HttpGet]
+
+        public IActionResult Get(int id)
+
+        {
+
+            try
+            {
+                _generoRepository.BuscarPorId(id);
+                return StatusCode(200);
+            }
+
+
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
         }
     }
 

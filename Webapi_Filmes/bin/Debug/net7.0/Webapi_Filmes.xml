@@ -134,18 +134,18 @@
                    - SqlServer : User Id = sa; Pwd : Senha 
             </summary>
         </member>
+        <member name="M:Webapi_Filmes.Repositories.GeneroRepository.ListarTodos">
+            <summary>
+            Metodo Para listar todos os Obejetos Generos 
+            </summary>
+            <returns> Lista de Objetos </returns>
+        </member>
         <member name="M:Webapi_Filmes.Repositories.GeneroRepository.Cadastrar(Webapi_Filmes.Domains.GeneroDomain)">
             <summary>
             Cadastrar um novo genero
             </summary>
             <param name="novoGenero">Objeto Com as informacoes que serao cadastradas</param>
             <exception cref="T:System.NotImplementedException"></exception>
-        </member>
-        <member name="M:Webapi_Filmes.Repositories.GeneroRepository.ListarTodos">
-            <summary>
-            Metodo Para listar todos os Obejetos Generos 
-            </summary>
-            <returns> Lista de Objetos </returns>
         </member>
     </members>
 </doc>
