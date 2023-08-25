@@ -10,7 +10,7 @@ namespace Webapi_Filmes.Domains
     {
         public int IdGenero { get; set; }
 
-        [Required(ErrorMessage ="O Nome dfo Genero e OBRIGATORIO!!!")]
+        [Required(ErrorMessage ="O Nome do Genero e OBRIGATORIO!!!")]
         public string Nome { get; set; }
 
 

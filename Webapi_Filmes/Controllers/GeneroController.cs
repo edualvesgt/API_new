@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Webapi_Filmes.Domains;
 using Webapi_Filmes.Interface;
 using Webapi_Filmes.Repositories;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Webapi_Filmes.Controllers
 {
@@ -41,7 +42,7 @@ namespace Webapi_Filmes.Controllers
         /// </summary>
         /// <returns>Resposta para o usuario </returns>
         [HttpGet]
-        public IActionResult Get() 
+        public IActionResult Get()
         {
             try
             {
@@ -57,12 +58,48 @@ namespace Webapi_Filmes.Controllers
                 return BadRequest(erro.Message);
             }
 
-            
+        }
 
-            
+        /// <summary>
+        /// EndPoind que aciona o metodo de cadastro genero  
+        /// </summary>
+        /// <param name="novoGenero"> Objeto recebido na requisicao</param>
+        /// <returns> Status code 201 (Created)</returns>
+        [HttpPost]
+        public IActionResult Post(GeneroDomain novoGenero)
+        {
+            try
+            {
+                //Chamada para o metodo cadastrar pssando o objeto como um padrao 
+                _generoRepository.Cadastrar(novoGenero);
 
-            
+                //Retorna um status code 201 
+                return StatusCode(201);
+            }
+            catch (Exception error)
+            {
+                //Retorna um status code 400 e a mensagem de erro 
+                return BadRequest(error.Message);
+            }
+
+        }
+
+        [HttpDelete ("{id}")]
+
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _generoRepository.Deletar(id);
+                return StatusCode(200);
+            }
+            catch (Exception error)
+            {
+                //Retorna um status code 400 e a mensagem de erro 
+                return BadRequest(error.Message);
+            }
 
         }
     }
+
 }

@@ -28,17 +28,86 @@ namespace Webapi_Filmes.Repositories
 
         public GeneroDomain BuscarPorId(int id)
         {
-            throw new NotImplementedException();
+            //Declara a string de conexaso como parametro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                //Declara a query que sera executada
+                string querySelectId = "SELECT * FROM Genero   WHERE IdGenero = @id";
+
+                //Abre a conexao com o banco de dados 
+                con.Open();
+
+                //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
+                using (SqlCommand cmd = new SqlCommand(querySelectId, con))
+                {
+                    ////Passa o valor do parametro 
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    //Executar a query (queryDelete)
+                    cmd.ExecuteNonQuery();
+
+                }
+
+
+            }
         }
 
+        /// <summary>
+        /// Cadastrar um novo genero
+        /// </summary>
+        /// <param name="novoGenero">Objeto Com as informacoes que serao cadastradas</param>
+        /// <exception cref="NotImplementedException"></exception>
         public void Cadastrar(GeneroDomain novoGenero)
         {
-            throw new NotImplementedException();
+            //Declara a string de conexaso como parametro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                //Declara a query que sera executada
+                string queryInsert = "INSERT INTO Genero(Nome)  VALUES (@Nome)";
+
+                //Abre a conexao com o banco de dados 
+                con.Open();
+
+
+                //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    ////Passa o valor do parametro 
+                    cmd.Parameters.AddWithValue("@Nome",novoGenero.Nome);
+
+                    //Executar a query (queryInsert)
+                    cmd.ExecuteNonQuery();
+
+                }
+
+
+            }
         }
 
         public void Deletar(int id)
         {
-            throw new NotImplementedException();
+            //Declara a string de conexaso como parametro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                //Declara a query que sera executada
+                string queryDelete = "DELETE FROM Genero   WHERE @id = IdGenero";
+
+                //Abre a conexao com o banco de dados 
+                con.Open();
+
+                //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    ////Passa o valor do parametro 
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    //Executar a query (queryDelete)
+                    cmd.ExecuteNonQuery();
+
+                }
+
+              
+            }
         }
 
 
@@ -64,12 +133,12 @@ namespace Webapi_Filmes.Repositories
                 SqlDataReader rdr;
 
                 //Declara o SqlCommand passando a query que sera executada e a conexao com o banco de dados 
-                using (SqlCommand cmd = new SqlCommand(QuerySelectAll,Con))
+                using (SqlCommand cmd = new SqlCommand(QuerySelectAll, Con))
                 {
-                   //Executa a query e armazena os dados do rdr
-                   rdr = cmd.ExecuteReader();
+                    //Executa a query e armazena os dados do rdr
+                    rdr = cmd.ExecuteReader();
 
-                    while (rdr.Read()) 
+                    while (rdr.Read())
                     {
                         GeneroDomain genero = new GeneroDomain()
                         {
