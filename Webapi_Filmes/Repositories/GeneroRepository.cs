@@ -23,21 +23,32 @@ namespace Webapi_Filmes.Repositories
 
         public void AtualizarIdUr(int id, GeneroDomain genero)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                string queryUpdatebyId = "UPDATE Genero SET Nome = @nome  WHERE IdGenero = @id ";
+
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdatebyId, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.Parameters.AddWithValue("@genero", genero);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public GeneroDomain BuscarPorId(int id)
         {
 
-            GeneroDomain buscar = new GeneroDomain();
-
-            List<GeneroDomain> ListaBusca =  new List<GeneroDomain>();
-
+       
             //Declara a string de conexaso como parametro
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
                 //Declara a query que sera executada
-                string querySelectId = "SELECT * FROM Genero   WHERE IdGenero = @id";
+                string querySelectId = "SELECT IdGenero , Nome FROM Genero WHERE IdGenero = @id";
 
                 //Abre a conexao com o banco de dados 
                 con.Open();
@@ -49,36 +60,68 @@ namespace Webapi_Filmes.Repositories
                 using (SqlCommand cmd = new SqlCommand(querySelectId, con))
                 {
 
-                    //rdr = cmd.ExecuteReader();
-
-                    ////Passa o valor do parametro 
+                    ///Passa o valor do parametro 
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    //Executar a query (queryDelete)
-                   rdr = cmd.ExecuteReader();
+                    //Executar a query (querySelectId)
+                    rdr = cmd.ExecuteReader();
 
-                    while (rdr.Read())
+
+                    if (rdr.Read())
                     {
-                        GeneroDomain genero = new GeneroDomain()
+                        GeneroDomain busca = new GeneroDomain()
                         {
                             IdGenero = Convert.ToInt32(rdr[0]),
 
-                            Nome = Convert.ToString(rdr["Nome"])  
+                            Nome = rdr["Nome"].ToString()
                         };
 
-                        ListaBusca.Add(genero);
+                        return busca;
                     }
-                   
-                    
+
+                    return null;
                 }
-         
+
+                
+
             }
 
-            buscar = ListaBusca.First(x => x.IdGenero == id);
-
-            return buscar;
+            
         }
 
+
+
+        /// <summary>
+        /// Cadastrar um novo genero
+        /// </summary>
+        /// <param name="novoGenero">Objeto Com as informacoes que serao cadastradas</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Cadastrar(GeneroDomain novoGenero)
+        {
+            //Declara a string de conexaso como parametro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                //Declara a query que sera executada
+                string queryInsert = "INSERT INTO Genero(Nome)  VALUES (@Nome)";
+
+                //Abre a conexao com o banco de dados 
+                con.Open();
+
+
+                //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    ////Passa o valor do parametro 
+                    cmd.Parameters.AddWithValue("@Nome", novoGenero.Nome);
+
+                    //Executar a query (queryInsert)
+                    cmd.ExecuteNonQuery();
+
+                }
+
+
+            }
+        }
 
 
         /// <summary>
@@ -132,37 +175,7 @@ namespace Webapi_Filmes.Repositories
 
 
 
-        /// <summary>
-        /// Cadastrar um novo genero
-        /// </summary>
-        /// <param name="novoGenero">Objeto Com as informacoes que serao cadastradas</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Cadastrar(GeneroDomain novoGenero)
-        {
-            //Declara a string de conexaso como parametro
-            using (SqlConnection con = new SqlConnection(StringConexao))
-            {
-                //Declara a query que sera executada
-                string queryInsert = "INSERT INTO Genero(Nome)  VALUES (@Nome)";
 
-                //Abre a conexao com o banco de dados 
-                con.Open();
-
-
-                //Declara o SqlCommand passando a query que sera executada e a conexao do banco 
-                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
-                {
-                    ////Passa o valor do parametro 
-                    cmd.Parameters.AddWithValue("@Nome",novoGenero.Nome);
-
-                    //Executar a query (queryInsert)
-                    cmd.ExecuteNonQuery();
-
-                }
-
-
-            }
-        }
 
         public void Deletar(int id)
         {
@@ -186,7 +199,7 @@ namespace Webapi_Filmes.Repositories
 
                 }
 
-              
+
             }
         }
 
