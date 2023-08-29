@@ -60,7 +60,7 @@
             </summary>
             <param name="filme"> Objeto Atualizado (Novas informacoes)</param>
         </member>
-        <member name="M:Webapi_Filmes.Interface.IFilmeRepository.AtualizarIdUr(System.Int32,Webapi_Filmes.Domains.FilmeDomain)">
+        <member name="M:Webapi_Filmes.Interface.IFilmeRepository.AtualizarIdUrl(System.Int32,Webapi_Filmes.Domains.FilmeDomain)">
             <summary>
             Atualizar objeto existente passando o seu id pela UrL
             </summary>

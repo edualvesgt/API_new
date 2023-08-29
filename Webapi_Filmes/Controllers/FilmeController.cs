@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Webapi_Filmes.Domains;
 using Webapi_Filmes.Interface;
 using Webapi_Filmes.Repositories;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Webapi_Filmes.Controllers
 {
@@ -31,7 +32,7 @@ namespace Webapi_Filmes.Controllers
 
         [HttpGet]
 
-        public IActionResult Get () 
+        public IActionResult Get()
         {
             try
             {
@@ -45,5 +46,86 @@ namespace Webapi_Filmes.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Post(FilmeDomain novoFilme)
+
+        {
+            try
+            {
+                _filmeRepository.Cadastrar(novoFilme);
+                return StatusCode(201);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _filmeRepository.Deletar(id);
+                return StatusCode(200);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                FilmeDomain busca = _filmeRepository.BuscarPorId(id);
+
+                if (busca == null)
+                {
+                    return NotFound("Nenhum Filme Encontrado");
+                }
+
+                return Ok(busca);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
+
+        [HttpPut]
+
+        public IActionResult PutById(FilmeDomain filme, int id)
+        {
+            FilmeDomain busca = _filmeRepository.BuscarPorId(id);
+
+            try
+            {
+
+                if (busca == null)
+                {
+                    return NotFound("Nenhum Filme Encontrado");
+                }
+
+                else
+                {
+                    _filmeRepository.AtualizarIdUrl(id, filme);
+                    return StatusCode(200);
+                }
+            }
+            catch (Exception error)
+            {
+
+                return BadRequest(error.Message);
+            }
+        }
     }
 }

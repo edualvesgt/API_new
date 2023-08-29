@@ -9,6 +9,8 @@ namespace Webapi_Filmes.Domains
         [Required(ErrorMessage ="O Titulo do filme deve ser Informado!!!")]
         public string TituloFilme { get; set;}
 
+
+
         //Referencia para a classe genero 
         public GeneroDomain Genero { get; set; } 
     }
