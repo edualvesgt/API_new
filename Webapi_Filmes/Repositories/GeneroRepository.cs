@@ -18,22 +18,36 @@ namespace Webapi_Filmes.Repositories
         private string StringConexao = "Data Source = NOTE15-S15; initial Catalog = Filmes; User Id = sa; pwd = Senai@134";
         public void AtualizarIdCorpo(GeneroDomain genero)
         {
-            throw new NotImplementedException();
-        }
-
-        public void AtualizarIdUr(int id, GeneroDomain genero)
-        {
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
-                string queryUpdatebyId = "UPDATE Genero SET Nome = @nome  WHERE IdGenero = @id ";
+                string queryUpdateById = "UPDATE Genero SET Nome = @nome  WHERE IdGenero = @id ";
 
                 con.Open();
 
-                using (SqlCommand cmd = new SqlCommand(queryUpdatebyId, con))
+                using (SqlCommand cmd = new SqlCommand(queryUpdateById, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", genero.IdGenero);
+
+                    cmd.Parameters.AddWithValue("@nome", genero.Nome);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AtualizarIdUrl(int id, GeneroDomain genero)
+        {
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                string queryUpdatebyUrl = "UPDATE Genero SET Nome = @nome  WHERE IdGenero = @id ";
+
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdatebyUrl, con))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
 
-                    cmd.Parameters.AddWithValue("@genero", genero);
+                    cmd.Parameters.AddWithValue("@nome", genero.Nome);
 
                     cmd.ExecuteNonQuery();
                 }

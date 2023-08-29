@@ -1,4 +1,5 @@
-﻿using Webapi_Filmes.Domains;
+﻿using System.Data.SqlClient;
+using Webapi_Filmes.Domains;
 using Webapi_Filmes.Interface;
 
 namespace Webapi_Filmes.Repositories
@@ -41,7 +42,49 @@ namespace Webapi_Filmes.Repositories
 
         public List<FilmeDomain> ListarTodos()
         {
-            throw new NotImplementedException();
+            List<FilmeDomain> ListaFilmes = new List<FilmeDomain>();
+
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                string querySelectAll = "SELECT * FROM Filme INNER JOIN Genero ON Filme.IdGenero = Genero.IdGenero;";
+                ;
+
+                con.Open();
+
+                SqlDataReader rdr;
+
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
+                {
+                    rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        FilmeDomain filme = new FilmeDomain()
+                        {
+                            IdFilme = Convert.ToInt32(rdr["IdFilme"]),
+
+                            TituloFilme = rdr["Titulo"].ToString(),
+
+                            Genero = new GeneroDomain()
+                            {
+                                IdGenero = Convert.ToInt32(rdr["IdGenero"]),
+
+                                Nome = rdr["Nome"].ToString()
+                            }
+
+                    };
+
+
+
+
+                    ListaFilmes.Add(filme);
+                }
+
+            }
+
         }
-    }
+
+            return ListaFilmes;
+        }
+}
 }

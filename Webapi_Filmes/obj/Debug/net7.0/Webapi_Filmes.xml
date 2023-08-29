@@ -4,6 +4,16 @@
         <name>Webapi_Filmes</name>
     </assembly>
     <members>
+        <member name="P:Webapi_Filmes.Controllers.FilmeController._filmeRepository">
+            <summary>
+            Objeto _filmeRepository que iara receber todos os metodos definidos na interface IFilmeRepository
+            </summary>
+        </member>
+        <member name="M:Webapi_Filmes.Controllers.FilmeController.#ctor">
+            <summary>
+            Instancia o objeto _filmeRepository para que haja refrencia aos metodos do repositorio
+            </summary>
+        </member>
         <member name="P:Webapi_Filmes.Controllers.GeneroController._generoRepository">
             <summary>
             Objeto _generoRepository que iara receber todos os metodos definidos na interface IGeneroRepository
@@ -94,7 +104,7 @@
             </summary>
             <param name="genero"> Objeto Atualizado (Novas informacoes)</param>
         </member>
-        <member name="M:Webapi_Filmes.Interface.IGeneroRepository.AtualizarIdUr(System.Int32,Webapi_Filmes.Domains.GeneroDomain)">
+        <member name="M:Webapi_Filmes.Interface.IGeneroRepository.AtualizarIdUrl(System.Int32,Webapi_Filmes.Domains.GeneroDomain)">
             <summary>
             Atualizar objeto existente passando o seu id pela UrL
             </summary>

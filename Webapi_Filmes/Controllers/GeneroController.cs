@@ -127,20 +127,48 @@ namespace Webapi_Filmes.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut ("{id}")]
 
-        public IActionResult Put(GeneroDomain novoGenero, int id )
+        public IActionResult PutUpsdateById(GeneroDomain novoGenero ,  int id)
         {
 
             try
             {
-                _generoRepository.AtualizarIdUr(id, novoGenero);
+                GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
 
-                return StatusCode(200);
+                if (generoBuscado == null)
+                {
+                    return NotFound("Nenhum Genero encontrado");
+                }
+
+                else
+                {
+                    _generoRepository.AtualizarIdUrl(id, novoGenero);
+                    return StatusCode(200);
+                }
+                
+
+                
             }
             catch (Exception error )
             {
+                return BadRequest(error.Message);
+            }
+        }
 
+
+        [HttpPut]
+
+        public IActionResult PutUpdateByCorpo (GeneroDomain genero)
+        {
+            try
+            {
+                _generoRepository.AtualizarIdCorpo(genero);
+                return StatusCode(200);
+            }
+            catch (Exception error)
+            {
+                BadRequest(error.Message);
                 return BadRequest(error.Message);
             }
         }

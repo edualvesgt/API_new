@@ -32,7 +32,7 @@ namespace Webapi_Filmes.Interface
         /// </summary>
         /// <param name="id">Id do objeto que sera atualizado  </param>
         /// <param name="genero">Objeto Atualizado (Novas Informacoes)</param>
-        void AtualizarIdUr(int id , GeneroDomain genero);
+        void AtualizarIdUrl(int id , GeneroDomain genero);
 
         /// <summary>
         /// Deletar um Objeto Atraves do seu id
