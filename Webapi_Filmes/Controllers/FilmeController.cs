@@ -101,7 +101,7 @@ namespace Webapi_Filmes.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("{id}")]
 
         public IActionResult PutById(FilmeDomain filme, int id)
         {
@@ -124,6 +124,22 @@ namespace Webapi_Filmes.Controllers
             catch (Exception error)
             {
 
+                return BadRequest(error.Message);
+            }
+        }
+
+
+        [HttpPut]
+
+        public IActionResult PutByBody (FilmeDomain filme)
+        {
+            try
+            {
+                _filmeRepository.AtualizarIdCorpo(filme);
+                return StatusCode(200, filme);
+            }
+            catch (Exception error)
+            {
                 return BadRequest(error.Message);
             }
         }

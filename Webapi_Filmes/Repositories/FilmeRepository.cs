@@ -20,14 +20,28 @@ namespace Webapi_Filmes.Repositories
 
         public void AtualizarIdCorpo(FilmeDomain filme)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                string queryUpdateByBody = "UPDATE Filme SET IdGenero = @IdGenero , Titulo = @Titulo WHERE IdFilme = @IdFilme";
+
+                con.Open();
+
+                using (SqlCommand cmd =  new SqlCommand(queryUpdateByBody , con))
+                {
+                    cmd.Parameters.AddWithValue("@IdFilme", filme.IdFilme);
+                    cmd.Parameters.AddWithValue("@Titulo", filme.TituloFilme);
+                    cmd.Parameters.AddWithValue("@IdGenero", filme.Genero.IdGenero);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void AtualizarIdUrl(int id, FilmeDomain filme)
         {
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
-                string queryUpdateById = "UPDATE Filme SET Filme.IdGenero = @IdGenero, Titulo = @Titulo  WHERE IdFilme = @IdFIlme";
+                string queryUpdateById = "UPDATE Filme SET Filme.IdGenero = @IdGenero, Titulo = @Titulo  WHERE IdFilme = @IdFilme";
 
                 con.Open();
 
@@ -69,7 +83,9 @@ namespace Webapi_Filmes.Repositories
 
                             TituloFilme = rdr["Titulo"].ToString(),
                             IdFilme = Convert.ToInt32(rdr["IdFilme"]),
-                            
+                           // IdGenero = Convert.ToInt32(rdr["IdGenero"]),
+
+
                             Genero = new GeneroDomain()
                             {
                                 Nome = rdr["Nome"].ToString(),
@@ -134,7 +150,7 @@ namespace Webapi_Filmes.Repositories
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
                 string querySelectAll = "SELECT * FROM Filme INNER JOIN Genero ON Filme.IdGenero = Genero.IdGenero;";
-                ;
+                
 
                 con.Open();
 
